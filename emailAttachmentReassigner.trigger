@@ -1,11 +1,12 @@
 trigger emailAttachmentReassigner on Attachment (before insert) {
 	map<id, id> msgIdToParentId = new map<id, id>();
 	Attachment[] reparents = new Attachment[]{};
-		
+	Schema.sObjectType email = emailmessage.getsobjecttype();
+
 	for(Attachment a : trigger.new) {
 		if(a.parentid != null){
-			// Check the parent ID - if it's 02s, this is for an email message
-			if(string.valueof(a.parentid).substring(0, 3) == '02s') {
+			//see if the parent is an EmailMessage
+			if(a.parentid.getsobjecttype() == email) {
 				msgIdToParentId.put(a.parentid, null);
 				reparents.add(a);
 			}
