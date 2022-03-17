@@ -6,7 +6,7 @@ trigger emailAttachmentReassigner on Attachment (before insert) {
 	for(Attachment a : trigger.new) {
 		if(a.parentid != null){
 			//see if the parent is an EmailMessage
-			if(a.parentid.getsobjecttype() == email) {
+			if(a.parentid.getsobjecttype() == EmailMessage.getsObjectType()) {
 				msgIdToParentId.put(a.parentid, null);
 				reparents.add(a);
 			}
